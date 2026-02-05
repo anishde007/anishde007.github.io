@@ -6,30 +6,44 @@
     <title>Anish De - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Archivo Black for headers, Space Mono for technical body text -->
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Archivo Black', 'sans-serif'],
-                        mono: ['Space Mono', 'monospace'],
-                        helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+                        // Title: Helvetica Bold (System fallback to Arial)
+                        title: ['Helvetica', 'Arial', 'sans-serif'],
+                        // Body: SF Pro (System fallback stack)
+                        body: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        paper: '#e6e6e6', 
-                        ink: '#080808',
+                        paper: '#ffffff', 
+                        ink: '#000000',
                     },
                     spacing: {
                         '128': '32rem',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Base Global Noise */
+        /* Global Styles */
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            overflow-x: hidden;
+        }
+        
+        ::selection {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        /* Noise Overlay */
         .noise-overlay {
             position: fixed;
             top: 0;
@@ -38,50 +52,26 @@
             height: 100%;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.12; 
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.08; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
         }
 
-        /* Heavy Static for Dark Backgrounds */
-        .bg-static {
-            position: relative;
-            background-color: #080808;
-            overflow: hidden;
-        }
-        .bg-static::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-
-        /* Spray Paint Vignette */
-        .vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 49;
-            background: radial-gradient(circle at 50% 50%, transparent 50%, rgba(0,0,0,0.1) 100%);
-        }
-
-        body {
-            background-color: #e6e6e6;
-            color: #080808;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+        /* Interactive Hero Effects */
+        .interactive-section {
+            --mouse-x: 50%;
+            --mouse-y: 50%;
         }
         
-        ::selection {
-            background: #080808;
-            color: #e6e6e6;
+        .interactive-spotlight {
+            background: radial-gradient(
+                600px circle at var(--mouse-x) var(--mouse-y), 
+                rgba(255, 255, 255, 0.1),
+                transparent 40%
+            );
+            z-index: 1;
+            mix-blend-mode: screen;
+            pointer-events: none;
         }
 
         /* Custom Scrollbar */
@@ -89,31 +79,33 @@
             width: 12px;
         }
         ::-webkit-scrollbar-track {
-            background: #e6e6e6;
-            border-left: 2px solid #080808;
+            background: #ffffff;
+            border-left: 2px solid #000000;
         }
         ::-webkit-scrollbar-thumb {
-            background: #080808;
-            border: 2px solid #e6e6e6;
+            background: #000000;
+            border: 2px solid #ffffff;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #333;
         }
 
-        /* Brutalist Hover Invert */
+        /* Hover Effects */
         .hover-invert {
-            transition: all 0.1s steps(2);
+            transition: all 0.2s ease-out;
         }
         .hover-invert:hover {
-            background-color: #080808;
-            color: #e6e6e6;
+            background-color: #000000;
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.2);
         }
         .hover-invert:hover * {
-            color: #e6e6e6;
-            border-color: #e6e6e6;
+            color: #ffffff;
+            border-color: #ffffff;
         }
         
-        /* Underline animation */
+        /* Link Underline */
         .link-underline {
             position: relative;
         }
@@ -122,128 +114,173 @@
             position: absolute;
             width: 100%;
             transform: scaleX(0);
-            height: 3px;
-            bottom: -4px;
+            height: 2px;
+            bottom: -2px;
             left: 0;
-            background-color: #080808;
+            background-color: #000000;
             transform-origin: bottom right;
-            transition: transform 0.2s cubic-bezier(0, 0.5, 0.5, 1);
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .link-underline:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
 
-        /* Helper for tight Helvetica logo */
-        .font-helvetica-bold {
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            font-weight: 700;
+        /* Scroll Reveal */
+        .reveal-on-scroll {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="font-mono text-ink antialiased relative">
+<body class="font-body text-ink antialiased relative">
 
     <!-- Texture Layers -->
     <div class="noise-overlay"></div>
-    <div class="vignette"></div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full bg-paper/95 backdrop-blur-sm z-50 border-b-4 border-ink transition-all duration-300" id="navbar">
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b-4 border-black transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between h-24 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <!-- Updated Logo Style: Helvetica Bold, Very Tight -->
-                    <a href="#" class="text-3xl font-helvetica-bold tracking-tighter uppercase relative group -tracking-[0.1em]">
-                        AnishDe<span class="text-4xl text-ink leading-none">.</span>
-                        <span class="absolute -bottom-2 left-0 w-full h-1 bg-ink transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                    <!-- Logo: Helvetica Bold, Extremely Tight -->
+                    <a href="#" class="text-3xl font-title font-bold tracking-[-0.08em] text-black">
+                        AnishDe.
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-12 items-center">
-                    <a href="#about" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">About</a>
-                    <a href="#experience" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Experience</a>
-                    <a href="#skills" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Skills</a>
-                    <a href="#projects" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Projects</a>
-                    <a href="#contact" class="px-8 py-3 bg-ink text-paper font-bold uppercase text-sm tracking-widest border-2 border-ink hover:bg-transparent hover:text-ink transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">Contact</a>
+                    <a href="#about" class="text-black font-title font-bold uppercase text-sm tracking-widest link-underline">About</a>
+                    <a href="#experience" class="text-black font-title font-bold uppercase text-sm tracking-widest link-underline">Experience</a>
+                    <a href="#skills" class="text-black font-title font-bold uppercase text-sm tracking-widest link-underline">Skills</a>
+                    <a href="#projects" class="text-black font-title font-bold uppercase text-sm tracking-widest link-underline">Projects</a>
+                    <a href="#contact" class="px-8 py-3 bg-black text-white font-title font-bold uppercase text-sm tracking-widest border-2 border-black hover:bg-white hover:text-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">Contact</a>
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-ink hover:opacity-70 focus:outline-none">
+                    <button id="mobile-menu-btn" class="text-black hover:opacity-70 focus:outline-none">
                         <i class="fas fa-bars text-3xl"></i>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-paper border-b-4 border-ink">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b-4 border-black">
             <div class="px-4 pt-4 pb-8 space-y-2">
-                <a href="#about" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">About</a>
-                <a href="#experience" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Experience</a>
-                <a href="#skills" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Skills</a>
-                <a href="#projects" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Projects</a>
-                <a href="#contact" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest bg-ink text-paper">Contact Me</a>
+                <a href="#about" class="block px-4 py-4 text-lg font-title font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white">About</a>
+                <a href="#experience" class="block px-4 py-4 text-lg font-title font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white">Experience</a>
+                <a href="#skills" class="block px-4 py-4 text-lg font-title font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white">Skills</a>
+                <a href="#projects" class="block px-4 py-4 text-lg font-title font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white">Projects</a>
+                <a href="#contact" class="block px-4 py-4 text-lg font-title font-bold uppercase tracking-widest bg-black text-white">Contact Me</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative pt-40 pb-32 lg:pt-52 lg:pb-40 min-h-screen flex items-center overflow-hidden">
+    <section id="hero-interactive" class="interactive-section relative pt-40 pb-32 lg:pt-52 lg:pb-40 min-h-screen flex items-center overflow-hidden bg-black text-white">
+        
+        <!-- Interactive Spotlight -->
+        <div class="absolute inset-0 interactive-spotlight"></div>
+
         <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
-            <div class="flex flex-col items-start max-w-full">
-                
-                <!-- Corner details -->
-                <div class="absolute top-0 right-6 hidden md:block text-right opacity-60">
-                    <p class="font-bold uppercase text-xs tracking-widest mb-1">Portfolio_v2.0</p>
-                    <p class="font-bold uppercase text-xs tracking-widest">© 2026</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- LEFT COLUMN: Content -->
+                <div class="flex flex-col items-start z-10 reveal-on-scroll w-full">
+                    
+                    <!-- Top Tag -->
+                    <div class="inline-block mb-8 px-4 py-1 border border-white text-white font-title font-bold uppercase text-xs tracking-widest bg-transparent">
+                        Electrical Engineering Student
+                    </div>
+                    
+                    <!-- Main Title: Helvetica Bold, Extremely Tight -->
+                    <h1 class="text-8xl sm:text-9xl md:text-[11rem] mb-8 leading-[0.8] w-full font-title font-bold tracking-[-0.1em]">
+                        Anish<br>De.
+                    </h1>
+                    
+                    <div class="border-l-8 border-white pl-6 mb-8 py-2">
+                        <h2 class="text-3xl sm:text-4xl font-title font-bold uppercase tracking-[-0.05em]">IIT Mandi</h2>
+                        <p class="font-body text-sm opacity-60 font-normal">Bachelor of Technology</p>
+                    </div>
+                    
+                    <!-- INTERESTS (Separated) -->
+                    <div class="flex flex-wrap gap-x-6 gap-y-2 text-lg md:text-xl text-white font-title font-bold leading-relaxed mb-12 reveal-on-scroll" style="transition-delay: 300ms;">
+                        <span>Embedded Systems</span>
+                        <span class="opacity-30">//</span>
+                        <span>FPGA Design</span>
+                        <span class="opacity-30">//</span>
+                        <span>Biomedical Eng.</span>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-6 reveal-on-scroll" style="transition-delay: 400ms;">
+                        <a href="#projects" class="px-10 py-5 bg-white text-black font-title font-bold uppercase tracking-widest border-2 border-white hover:bg-black hover:text-white transition-all text-sm shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]">
+                            Selected Works
+                        </a>
+                        <a href="mailto:your.email@example.com" class="px-10 py-5 bg-transparent text-white font-title font-bold uppercase tracking-widest border-2 border-white hover:bg-white hover:text-black transition-all text-sm flex items-center justify-center gap-3">
+                            Get in Touch <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="inline-block mb-6 px-4 py-1 border border-ink text-ink font-bold uppercase text-xs tracking-widest bg-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    Electrical Engineering Student
-                </div>
-                
-                <!-- Reduced Font Size slightly to prevent bleeding -->
-                <h1 class="text-6xl sm:text-8xl md:text-9xl font-sans text-ink tracking-[-0.05em] mb-6 leading-[0.85] uppercase break-words w-full mix-blend-multiply">
-                    Anish<br>De.
-                </h1>
-                
-                <div class="w-full h-4 bg-ink mb-10 max-w-sm"></div>
-                
-                <p class="text-lg md:text-2xl text-ink font-mono max-w-3xl leading-relaxed mb-12 border-l-4 border-ink pl-6">
-                    IIT Mandi <span class="opacity-30 mx-2">//</span> Embedded Systems <br>
-                    FPGA Design <span class="opacity-30 mx-2">//</span> Biomedical Eng.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-6">
-                    <a href="#projects" class="px-10 py-5 bg-ink text-paper font-bold uppercase tracking-widest border-2 border-ink hover:bg-transparent hover:text-ink transition-all text-sm shadow-[6px_6px_0px_0px_rgba(150,150,150,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]">
-                        Selected Works
-                    </a>
-                    <a href="mailto:your.email@example.com" class="px-10 py-5 bg-transparent text-ink font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper transition-all text-sm flex items-center justify-center gap-3">
-                        Get in Touch <i class="fas fa-arrow-right"></i>
-                    </a>
+                <!-- RIGHT COLUMN: Image Placeholder -->
+                <div class="relative w-full h-full min-h-[400px] flex items-center justify-center lg:justify-end reveal-on-scroll" style="transition-delay: 200ms;">
+                    <!-- Placeholder Frame (White Border for Black Background) -->
+                    <div class="w-full max-w-md aspect-[3/4] border-4 border-white bg-neutral-900 relative shadow-[16px_16px_0px_0px_rgba(255,255,255,0.1)] flex items-center justify-center group overflow-hidden transition-all duration-500 hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] hover:translate-x-2 hover:translate-y-2">
+                        
+                        <!-- Grid Lines inside placeholder -->
+                        <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 opacity-50">
+                            <div class="border-r border-b border-white/20"></div>
+                            <div class="border-b border-white/20"></div>
+                            <div class="border-r border-white/20"></div>
+                            <div></div>
+                        </div>
+
+                        <!-- Scanline Effect -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent h-4 w-full animate-[pulse_3s_linear_infinite] pointer-events-none" style="background-size: 100% 4px;"></div>
+
+                        <!-- Placeholder Text -->
+                        <div class="text-center z-10">
+                            <div class="w-20 h-20 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4 bg-black">
+                                <i class="fas fa-user text-3xl text-white"></i>
+                            </div>
+                            <p class="font-title text-xs uppercase tracking-widest bg-white text-black px-3 py-1 font-bold">Insert_Img_Here.jpg</p>
+                        </div>
+                        
+                        <!-- Decorative corner -->
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-8 border-l-8 border-white bg-transparent"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-8 border-r-8 border-white bg-transparent"></div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <!-- Large Abstract background letter -->
-        <div class="absolute -right-20 top-1/4 text-[20rem] md:text-[30rem] font-sans font-black opacity-[0.03] select-none pointer-events-none rotate-12">
+        <div class="absolute -right-20 top-1/4 text-[20rem] md:text-[30rem] font-title font-bold text-white opacity-[0.03] select-none pointer-events-none rotate-12 blur-sm">
             A
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-32 border-t-4 border-ink relative bg-paper">
+    <section id="about" class="py-32 border-t-4 border-black relative bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
-                <!-- Removed sticky on mobile, kept on medium screens with bg fix -->
-                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-paper/90 backdrop-blur-sm z-10 py-4 md:py-0">
-                    <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter mb-4 leading-none">About<br>Me.</h2>
-                    <div class="w-16 h-4 bg-ink mb-8"></div>
-                    <p class="font-mono text-xs uppercase tracking-widest opacity-60">Located: India</p>
+                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-white/90 backdrop-blur-sm z-10 py-4 md:py-0 reveal-on-scroll">
+                    <h2 class="text-5xl md:text-6xl font-title font-bold uppercase tracking-[-0.08em] mb-4 leading-none">About<br>Me.</h2>
+                    <div class="w-16 h-4 bg-black mb-8"></div>
+                    <p class="font-title font-bold text-xs uppercase tracking-widest opacity-60">Located: India</p>
                 </div>
                 
                 <div class="md:col-span-8">
-                    <div class="space-y-8 text-lg md:text-xl font-medium leading-relaxed font-mono">
+                    <div class="space-y-8 text-lg md:text-xl font-body leading-relaxed reveal-on-scroll">
                         <p>
-                            I am a final-year B.Tech student at <strong class="bg-ink text-paper px-2">IIT Mandi</strong> with international exposure from <strong class="bg-ink text-paper px-2">RWTH Aachen University</strong>.
+                            I am a final-year B.Tech student at <strong class="bg-black text-white px-2">IIT Mandi</strong> with international exposure from <strong class="bg-black text-white px-2">RWTH Aachen University</strong>.
                         </p>
                         <p>
                             My work sits at the intersection of raw hardware and human health. I engineer minimal, efficient systems—from bio-signal sensors to RISC processors.
@@ -251,17 +288,17 @@
                     </div>
                     
                     <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="p-8 border-4 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-paper hover:bg-ink hover:text-paper transition-all duration-200 group">
-                            <h3 class="font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-paper">Exchange Semester</h3>
-                            <p class="text-2xl md:text-3xl font-sans mb-2">RWTH Aachen</p>
-                            <p class="font-mono text-sm border-t-2 border-current pt-2 mt-4 inline-block">Apr 2025 – Sep 2025</p>
+                        <div class="p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white hover:bg-black hover:text-white transition-all duration-200 group reveal-on-scroll">
+                            <h3 class="font-title font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-white">Exchange Semester</h3>
+                            <p class="text-2xl md:text-3xl font-title font-bold mb-2">RWTH Aachen</p>
+                            <p class="text-sm font-body border-t-2 border-current pt-2 mt-4 inline-block">Apr 2025 – Sep 2025</p>
                         </div>
-                        <div class="p-8 border-4 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-paper hover:bg-ink hover:text-paper transition-all duration-200 group">
-                            <h3 class="font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-paper">Undergrad</h3>
-                            <p class="text-2xl md:text-3xl font-sans mb-2">IIT Mandi</p>
+                        <div class="p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white hover:bg-black hover:text-white transition-all duration-200 group reveal-on-scroll" style="transition-delay: 100ms;">
+                            <h3 class="font-title font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-white">Undergrad</h3>
+                            <p class="text-2xl md:text-3xl font-title font-bold mb-2">IIT Mandi</p>
                             <div class="flex justify-between items-end border-t-2 border-current pt-2 mt-4">
-                                <p class="font-mono text-sm">Nov 2022 – Present</p>
-                                <span class="text-xs font-bold bg-paper text-ink px-1 ml-2 group-hover:text-ink">CGPA: 8.20</span>
+                                <p class="text-sm font-body">Nov 2022 – Present</p>
+                                <span class="text-xs font-title font-bold bg-black text-white px-1 ml-2 group-hover:bg-white group-hover:text-black">CGPA: 8.20</span>
                             </div>
                         </div>
                     </div>
@@ -271,76 +308,69 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-32 border-t-4 border-ink bg-white relative">
+    <section id="experience" class="py-32 border-t-4 border-black bg-white relative">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
-                <!-- Reduced title size, removed sticky on mobile -->
-                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-white/90 backdrop-blur-sm z-10 py-4 md:py-0">
-                    <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter mb-4">Work<br>History</h2>
-                    <p class="font-mono text-xs opacity-60 uppercase tracking-widest border-b border-ink inline-block pb-1">Biomedical & Embedded</p>
+                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-white/90 backdrop-blur-sm z-10 py-4 md:py-0 reveal-on-scroll">
+                    <h2 class="text-5xl md:text-6xl font-title font-bold uppercase tracking-[-0.08em] mb-4">Work<br>History</h2>
+                    <p class="font-title font-bold text-xs opacity-60 uppercase tracking-widest border-b border-black inline-block pb-1">Biomedical & Embedded</p>
                 </div>
 
                 <div class="md:col-span-8 relative">
                     <!-- Continuous Timeline Line -->
-                    <div class="absolute left-0 top-2 bottom-2 w-1 bg-ink"></div>
+                    <div class="absolute left-0 top-2 bottom-2 w-1 bg-black"></div>
 
                     <!-- Item 1 -->
-                    <div class="group relative pl-12 py-2 mb-16">
-                        <!-- Square bullet on timeline -->
-                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
-                        
+                    <div class="group relative pl-12 py-2 mb-16 reveal-on-scroll">
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-white border-2 border-black group-hover:bg-black transition-colors"></div>
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                            <h3 class="text-2xl font-sans uppercase">Research Assistant</h3>
-                            <span class="font-mono text-xs font-bold bg-ink text-paper px-3 py-1 uppercase">Mar 2025 – Present</span>
+                            <h3 class="text-2xl font-title font-bold uppercase">Research Assistant</h3>
+                            <span class="font-title font-bold text-xs bg-black text-white px-3 py-1 uppercase">Mar 2025 – Present</span>
                         </div>
-                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Mandi (CHCi Dept)</p>
-                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                        <p class="font-title font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Mandi (CHCi Dept)</p>
+                        <p class="text-lg leading-relaxed mb-6 font-body opacity-80">
                             Developing a portable bio-signal device integrating TENS and EEG. Designed custom analog circuits and validated prototype for simultaneous neuro-stimulation.
                         </p>
                         <div class="flex gap-3 flex-wrap">
-                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Biomedical</span>
-                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Circuit Design</span>
-                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">TENS/EEG</span>
+                            <span class="text-xs font-title font-bold uppercase border-2 border-black px-2 py-1 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Biomedical</span>
+                            <span class="text-xs font-title font-bold uppercase border-2 border-black px-2 py-1 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Circuit Design</span>
+                            <span class="text-xs font-title font-bold uppercase border-2 border-black px-2 py-1 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">TENS/EEG</span>
                         </div>
                     </div>
 
                     <!-- Item 2 -->
-                    <div class="group relative pl-12 py-2 mb-16">
-                        <!-- Bullet -->
-                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
-                        
+                    <div class="group relative pl-12 py-2 mb-16 reveal-on-scroll">
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-white border-2 border-black group-hover:bg-black transition-colors"></div>
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                            <h3 class="text-2xl font-sans uppercase opacity-80 group-hover:opacity-100">Research Intern</h3>
-                            <span class="font-mono text-xs font-bold border border-ink px-3 py-1 uppercase group-hover:bg-ink group-hover:text-paper transition-colors">Dec 2024 – Feb 2025</span>
+                            <h3 class="text-2xl font-title font-bold uppercase opacity-80 group-hover:opacity-100">Research Intern</h3>
+                            <span class="font-title font-bold text-xs border border-black px-3 py-1 uppercase group-hover:bg-black group-hover:text-white transition-colors">Dec 2024 – Feb 2025</span>
                         </div>
-                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Hyderabad</p>
-                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                        <p class="font-title font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Hyderabad</p>
+                        <p class="text-lg leading-relaxed mb-6 font-body opacity-80">
                             Hardware benchmarking on Jetson Nano/AGX Orin. Analyzed FLOPS, power, and temperature for CNN models (YOLO, ViT).
                         </p>
                          <div class="flex gap-3 flex-wrap">
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Hardware Benchmarking</span>
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Edge Computing</span>
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">NVIDIA Jetson</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">Hardware Benchmarking</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">Edge Computing</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">NVIDIA Jetson</span>
                         </div>
                     </div>
 
                     <!-- Item 3 -->
-                    <div class="group relative pl-12 py-2 mb-16">
-                        <!-- Bullet -->
-                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
-                        
+                    <div class="group relative pl-12 py-2 mb-16 reveal-on-scroll">
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-white border-2 border-black group-hover:bg-black transition-colors"></div>
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                            <h3 class="text-2xl font-sans uppercase opacity-80 group-hover:opacity-100">ML Intern</h3>
-                            <span class="font-mono text-xs font-bold border border-ink px-3 py-1 uppercase group-hover:bg-ink group-hover:text-paper transition-colors">Jun 2024 – Jul 2024</span>
+                            <h3 class="text-2xl font-title font-bold uppercase opacity-80 group-hover:opacity-100">ML Intern</h3>
+                            <span class="font-title font-bold text-xs border border-black px-3 py-1 uppercase group-hover:bg-black group-hover:text-white transition-colors">Jun 2024 – Jul 2024</span>
                         </div>
-                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Kharagpur</p>
-                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                        <p class="font-title font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Kharagpur</p>
+                        <p class="text-lg leading-relaxed mb-6 font-body opacity-80">
                             Fault identification in AUVs using the "Haizhe" dataset. Built a 9-axis IMU prototype on Raspberry Pi.
                         </p>
                         <div class="flex gap-3 flex-wrap">
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Machine Learning</span>
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Robotics (AUV)</span>
-                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Raspberry Pi</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">Machine Learning</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">Robotics (AUV)</span>
+                            <span class="text-xs font-title font-bold uppercase border border-black px-2 py-1 hover:bg-black hover:text-white transition-colors">Raspberry Pi</span>
                         </div>
                     </div>
                 </div>
@@ -348,21 +378,21 @@
         </div>
     </section>
 
-    <!-- Skills Section (Updated Layout) -->
-    <section id="skills" class="border-t-4 border-ink">
+    <!-- Skills Section (Updated to White Background) -->
+    <section id="skills" class="border-t-4 border-black">
         <!-- Full width title block -->
-        <div class="w-full p-12 bg-static text-paper border-b-4 border-ink flex items-center justify-center md:justify-start overflow-hidden relative">
+        <div class="w-full p-12 bg-white text-black border-b-4 border-black flex items-center justify-center md:justify-start overflow-hidden relative reveal-on-scroll">
              <div class="noise-overlay absolute inset-0 opacity-20"></div>
-             <h2 class="text-5xl md:text-7xl font-sans uppercase tracking-tighter relative z-10">Tech Stack_</h2>
+             <h2 class="text-5xl md:text-7xl font-title font-bold uppercase tracking-[-0.08em] relative z-10">Tech Stack_</h2>
         </div>
         
-        <!-- 4 Column Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <!-- 4 Column Grid - White Background -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-black gap-1">
             <!-- Col 1: Hardware -->
-            <div class="p-10 border-b-4 md:border-b-0 md:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+            <div class="p-10 bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[300px] reveal-on-scroll">
                 <i class="fas fa-microchip text-4xl mb-8"></i>
-                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Hardware</h3>
-                <ul class="space-y-4 font-mono text-sm leading-tight">
+                <h3 class="font-title font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Hardware</h3>
+                <ul class="space-y-4 font-body text-sm leading-tight">
                     <li class="before:content-['>_'] before:mr-2">Verilog / SystemVerilog</li>
                     <li class="before:content-['>_'] before:mr-2">VHDL</li>
                     <li class="before:content-['>_'] before:mr-2">Vivado</li>
@@ -372,10 +402,10 @@
             </div>
             
             <!-- Col 2: Software -->
-            <div class="p-10 border-b-4 md:border-b-0 lg:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+            <div class="p-10 bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[300px] reveal-on-scroll" style="transition-delay: 100ms;">
                 <i class="fas fa-code text-4xl mb-8"></i>
-                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Software</h3>
-                <ul class="space-y-4 font-mono text-sm leading-tight">
+                <h3 class="font-title font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Software</h3>
+                <ul class="space-y-4 font-body text-sm leading-tight">
                     <li class="before:content-['>_'] before:mr-2">Python (ML/AI)</li>
                     <li class="before:content-['>_'] before:mr-2">C++</li>
                     <li class="before:content-['>_'] before:mr-2">LangChain</li>
@@ -384,10 +414,10 @@
             </div>
             
             <!-- Col 3: Biomedical -->
-            <div class="p-10 border-b-4 md:border-b-0 md:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+            <div class="p-10 bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[300px] reveal-on-scroll" style="transition-delay: 200ms;">
                 <i class="fas fa-heartbeat text-4xl mb-8"></i>
-                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Biomedical</h3>
-                <ul class="space-y-4 font-mono text-sm leading-tight">
+                <h3 class="font-title font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Biomedical</h3>
+                <ul class="space-y-4 font-body text-sm leading-tight">
                     <li class="before:content-['>_'] before:mr-2">Bio-Sensors</li>
                     <li class="before:content-['>_'] before:mr-2">EEG / TENS</li>
                     <li class="before:content-['>_'] before:mr-2">Analog Circuits</li>
@@ -395,11 +425,11 @@
                 </ul>
             </div>
 
-             <!-- Col 4: Tools & Sim (New) -->
-             <div class="p-10 hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+             <!-- Col 4: Tools & Sim -->
+             <div class="p-10 bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[300px] reveal-on-scroll" style="transition-delay: 300ms;">
                 <i class="fas fa-tools text-4xl mb-8"></i>
-                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Tools & Sim</h3>
-                <ul class="space-y-4 font-mono text-sm leading-tight">
+                <h3 class="font-title font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Tools & Sim</h3>
+                <ul class="space-y-4 font-body text-sm leading-tight">
                     <li class="before:content-['>_'] before:mr-2">MATLAB / Simulink</li>
                     <li class="before:content-['>_'] before:mr-2">LTspice</li>
                     <li class="before:content-['>_'] before:mr-2">Proteus</li>
@@ -410,118 +440,119 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-32 border-t-4 border-ink bg-paper">
+    <section id="projects" class="py-32 border-t-4 border-black bg-white">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
-                <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter leading-[0.85]">Selected<br>Projects</h2>
-                <a href="https://github.com" class="font-bold uppercase tracking-widest border-2 border-ink px-6 py-3 hover:bg-ink hover:text-paper transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] text-sm">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8 reveal-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-title font-bold uppercase tracking-[-0.08em] leading-[0.85]">Selected<br>Projects</h2>
+                <a href="https://github.com" class="font-title font-bold uppercase tracking-widest border-2 border-black px-6 py-3 hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] text-sm">
                     View GitHub Directory
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-2 border-ink">
+            <!-- FIXED GRID with GAP SEPARATORS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 bg-black border-2 border-black">
                 <!-- Project 1 -->
-                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2025 // ASIP</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2025 // ASIP</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">RISC-V<br>Optimization</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">RISC-V<br>Optimization</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         Designed an ASIP for cryptographic workloads. Extended RISC-V with custom instructions for 87% speedup vs baseline.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">ASIP Designer / C++</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">ASIP Designer / C++</p>
                     </div>
                 </article>
 
                 <!-- Project 2 -->
-                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll" style="transition-delay: 100ms;">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // MED</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2024 // MED</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Pi Temp<br>Logger</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">Pi Temp<br>Logger</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         Medical-grade temperature logging. Wheatstone bridge integration with PT100 sensor for high precision data acquisition.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">Python / Instrumentation</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">Python / Instrumentation</p>
                     </div>
                 </article>
 
                 <!-- Project 3 -->
-                <article class="hover-invert border-b-2 lg:border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll" style="transition-delay: 200ms;">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // HW</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2024 // HW</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">FPGA<br>RISC CPU</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">FPGA<br>RISC CPU</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         16-bit RISC processor with custom ISA on Xilinx Zybo-Z7. Verified hazards using SystemVerilog testbenches.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">SystemVerilog / Vivado</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">SystemVerilog / Vivado</p>
                     </div>
                 </article>
                 
                  <!-- Project 4 -->
-                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // FPGA</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2024 // FPGA</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">TicketGen<br>Basys 3</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">TicketGen<br>Basys 3</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         Verilog-based FSM for vending system. Coin handling and 7-segment display output on FPGA hardware.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">Verilog / Digital Design</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">Verilog / Digital Design</p>
                     </div>
                 </article>
                 
                  <!-- Project 5 -->
-                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll" style="transition-delay: 100ms;">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // EV</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2024 // EV</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Hybrid<br>Bike EV</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">Hybrid<br>Bike EV</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         Circuitry design with Pi & IMU. Achieved 10% efficiency gain with ML-based real-time motor assistance.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">Raspberry Pi / ML</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">Raspberry Pi / ML</p>
                     </div>
                 </article>
                 
                  <!-- Project 6 -->
-                <article class="hover-invert border-b-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                <article class="bg-white p-8 flex flex-col h-full group min-h-[400px] hover-invert transition-all reveal-on-scroll" style="transition-delay: 200ms;">
                     <div class="flex justify-between items-start mb-8">
-                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // NLP</span>
+                        <span class="font-title font-bold text-xs border border-current px-2 py-1">2024 // NLP</span>
                         <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </div>
-                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Text<br>Summarizer</h3>
-                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                    <h3 class="text-3xl font-title font-bold uppercase leading-none mb-6">Text<br>Summarizer</h3>
+                    <p class="text-sm font-body mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
                         Hugging Face LLM integration. 75% accuracy with LangChain support for PDF and arXiv research papers.
                     </p>
                     <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
-                        <p class="font-mono text-xs uppercase tracking-widest">LLM / NLP</p>
+                        <p class="font-title font-bold text-xs uppercase tracking-widest">LLM / NLP</p>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-static text-paper py-32 border-t-4 border-ink relative">
+    <!-- Footer - Fixed Visibility with Black Background -->
+    <footer id="contact" class="bg-black text-white py-32 border-t-4 border-black relative">
         <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-            <h2 class="text-6xl md:text-[8rem] font-sans uppercase tracking-tighter mb-16 opacity-90 leading-[0.8]">
+            <h2 class="text-6xl md:text-[8rem] font-title font-bold uppercase tracking-tighter mb-16 opacity-90 leading-[0.8] reveal-on-scroll">
                 Let's<br>Build.
             </h2>
             
-            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-24">
-                <a href="mailto:your.email@example.com" class="px-12 py-6 bg-paper text-ink font-bold uppercase tracking-widest border-2 border-paper hover:bg-transparent hover:text-paper transition-all text-lg shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-24 reveal-on-scroll">
+                <a href="mailto:your.email@example.com" class="px-12 py-6 bg-white text-black font-title font-bold uppercase tracking-widest border-2 border-white hover:bg-black hover:text-white transition-all text-lg shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
                     Email Me
                 </a>
                 <div class="flex gap-8">
@@ -530,7 +561,7 @@
                 </div>
             </div>
             
-            <div class="flex justify-between items-end border-t border-gray-800 pt-8 text-xs font-mono uppercase tracking-widest opacity-50">
+            <div class="flex justify-between items-end border-t border-white/20 pt-8 text-xs font-title font-bold uppercase tracking-widest opacity-50">
                 <p>&copy; 2026 Anish De</p>
                 <p>Designed with Code</p>
             </div>
@@ -560,6 +591,39 @@
                 navbar.classList.remove('py-0');
             }
         });
+
+        // SCROLL REVEAL SCRIPT
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Optional: stop observing once revealed
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Hero Mouse Tracking Script
+        const heroSection = document.getElementById('hero-interactive');
+        if(heroSection) {
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = heroSection.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                heroSection.style.setProperty('--mouse-x', `${x}px`);
+                heroSection.style.setProperty('--mouse-y', `${y}px`);
+            });
+        }
     </script>
 </body>
 </html>
