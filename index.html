@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anish De - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Archivo Black for headers, Space Mono for technical body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Archivo Black', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                        helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        paper: '#e6e6e6', 
+                        ink: '#080808',
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base Global Noise */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.12; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* Heavy Static for Dark Backgrounds */
+        .bg-static {
+            position: relative;
+            background-color: #080808;
+            overflow: hidden;
+        }
+        .bg-static::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Spray Paint Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 49;
+            background: radial-gradient(circle at 50% 50%, transparent 50%, rgba(0,0,0,0.1) 100%);
+        }
+
+        body {
+            background-color: #e6e6e6;
+            color: #080808;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        ::selection {
+            background: #080808;
+            color: #e6e6e6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e6e6e6;
+            border-left: 2px solid #080808;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #080808;
+            border: 2px solid #e6e6e6;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+
+        /* Brutalist Hover Invert */
+        .hover-invert {
+            transition: all 0.1s steps(2);
+        }
+        .hover-invert:hover {
+            background-color: #080808;
+            color: #e6e6e6;
+        }
+        .hover-invert:hover * {
+            color: #e6e6e6;
+            border-color: #e6e6e6;
+        }
+        
+        /* Underline animation */
+        .link-underline {
+            position: relative;
+        }
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 3px;
+            bottom: -4px;
+            left: 0;
+            background-color: #080808;
+            transform-origin: bottom right;
+            transition: transform 0.2s cubic-bezier(0, 0.5, 0.5, 1);
+        }
+        .link-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Helper for tight Helvetica logo */
+        .font-helvetica-bold {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="font-mono text-ink antialiased relative">
+
+    <!-- Texture Layers -->
+    <div class="noise-overlay"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-paper/95 backdrop-blur-sm z-50 border-b-4 border-ink transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between h-24 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <!-- Updated Logo Style: Helvetica Bold, Very Tight -->
+                    <a href="#" class="text-3xl font-helvetica-bold tracking-tighter uppercase relative group -tracking-[0.1em]">
+                        AnishDe<span class="text-4xl text-ink leading-none">.</span>
+                        <span class="absolute -bottom-2 left-0 w-full h-1 bg-ink transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-12 items-center">
+                    <a href="#about" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">About</a>
+                    <a href="#experience" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Experience</a>
+                    <a href="#skills" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Skills</a>
+                    <a href="#projects" class="text-ink font-bold uppercase text-sm tracking-widest link-underline">Projects</a>
+                    <a href="#contact" class="px-8 py-3 bg-ink text-paper font-bold uppercase text-sm tracking-widest border-2 border-ink hover:bg-transparent hover:text-ink transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">Contact</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-ink hover:opacity-70 focus:outline-none">
+                        <i class="fas fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-paper border-b-4 border-ink">
+            <div class="px-4 pt-4 pb-8 space-y-2">
+                <a href="#about" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">About</a>
+                <a href="#experience" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Experience</a>
+                <a href="#skills" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Skills</a>
+                <a href="#projects" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper">Projects</a>
+                <a href="#contact" class="block px-4 py-4 text-lg font-bold uppercase tracking-widest bg-ink text-paper">Contact Me</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-32 lg:pt-52 lg:pb-40 min-h-screen flex items-center overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
+            <div class="flex flex-col items-start max-w-full">
+                
+                <!-- Corner details -->
+                <div class="absolute top-0 right-6 hidden md:block text-right opacity-60">
+                    <p class="font-bold uppercase text-xs tracking-widest mb-1">Portfolio_v2.0</p>
+                    <p class="font-bold uppercase text-xs tracking-widest">© 2026</p>
+                </div>
+
+                <div class="inline-block mb-6 px-4 py-1 border border-ink text-ink font-bold uppercase text-xs tracking-widest bg-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    Electrical Engineering Student
+                </div>
+                
+                <!-- Reduced Font Size slightly to prevent bleeding -->
+                <h1 class="text-6xl sm:text-8xl md:text-9xl font-sans text-ink tracking-[-0.05em] mb-6 leading-[0.85] uppercase break-words w-full mix-blend-multiply">
+                    Anish<br>De.
+                </h1>
+                
+                <div class="w-full h-4 bg-ink mb-10 max-w-sm"></div>
+                
+                <p class="text-lg md:text-2xl text-ink font-mono max-w-3xl leading-relaxed mb-12 border-l-4 border-ink pl-6">
+                    IIT Mandi <span class="opacity-30 mx-2">//</span> Embedded Systems <br>
+                    FPGA Design <span class="opacity-30 mx-2">//</span> Biomedical Eng.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="#projects" class="px-10 py-5 bg-ink text-paper font-bold uppercase tracking-widest border-2 border-ink hover:bg-transparent hover:text-ink transition-all text-sm shadow-[6px_6px_0px_0px_rgba(150,150,150,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]">
+                        Selected Works
+                    </a>
+                    <a href="mailto:your.email@example.com" class="px-10 py-5 bg-transparent text-ink font-bold uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-paper transition-all text-sm flex items-center justify-center gap-3">
+                        Get in Touch <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Large Abstract background letter -->
+        <div class="absolute -right-20 top-1/4 text-[20rem] md:text-[30rem] font-sans font-black opacity-[0.03] select-none pointer-events-none rotate-12">
+            A
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 border-t-4 border-ink relative bg-paper">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                <!-- Removed sticky on mobile, kept on medium screens with bg fix -->
+                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-paper/90 backdrop-blur-sm z-10 py-4 md:py-0">
+                    <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter mb-4 leading-none">About<br>Me.</h2>
+                    <div class="w-16 h-4 bg-ink mb-8"></div>
+                    <p class="font-mono text-xs uppercase tracking-widest opacity-60">Located: India</p>
+                </div>
+                
+                <div class="md:col-span-8">
+                    <div class="space-y-8 text-lg md:text-xl font-medium leading-relaxed font-mono">
+                        <p>
+                            I am a final-year B.Tech student at <strong class="bg-ink text-paper px-2">IIT Mandi</strong> with international exposure from <strong class="bg-ink text-paper px-2">RWTH Aachen University</strong>.
+                        </p>
+                        <p>
+                            My work sits at the intersection of raw hardware and human health. I engineer minimal, efficient systems—from bio-signal sensors to RISC processors.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-8 border-4 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-paper hover:bg-ink hover:text-paper transition-all duration-200 group">
+                            <h3 class="font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-paper">Exchange Semester</h3>
+                            <p class="text-2xl md:text-3xl font-sans mb-2">RWTH Aachen</p>
+                            <p class="font-mono text-sm border-t-2 border-current pt-2 mt-4 inline-block">Apr 2025 – Sep 2025</p>
+                        </div>
+                        <div class="p-8 border-4 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-paper hover:bg-ink hover:text-paper transition-all duration-200 group">
+                            <h3 class="font-bold uppercase tracking-widest text-xs mb-4 opacity-70 group-hover:text-paper">Undergrad</h3>
+                            <p class="text-2xl md:text-3xl font-sans mb-2">IIT Mandi</p>
+                            <div class="flex justify-between items-end border-t-2 border-current pt-2 mt-4">
+                                <p class="font-mono text-sm">Nov 2022 – Present</p>
+                                <span class="text-xs font-bold bg-paper text-ink px-1 ml-2 group-hover:text-ink">CGPA: 8.20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-32 border-t-4 border-ink bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                <!-- Reduced title size, removed sticky on mobile -->
+                <div class="md:col-span-4 md:sticky md:top-32 h-fit bg-white/90 backdrop-blur-sm z-10 py-4 md:py-0">
+                    <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter mb-4">Work<br>History</h2>
+                    <p class="font-mono text-xs opacity-60 uppercase tracking-widest border-b border-ink inline-block pb-1">Biomedical & Embedded</p>
+                </div>
+
+                <div class="md:col-span-8 relative">
+                    <!-- Continuous Timeline Line -->
+                    <div class="absolute left-0 top-2 bottom-2 w-1 bg-ink"></div>
+
+                    <!-- Item 1 -->
+                    <div class="group relative pl-12 py-2 mb-16">
+                        <!-- Square bullet on timeline -->
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                            <h3 class="text-2xl font-sans uppercase">Research Assistant</h3>
+                            <span class="font-mono text-xs font-bold bg-ink text-paper px-3 py-1 uppercase">Mar 2025 – Present</span>
+                        </div>
+                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Mandi (CHCi Dept)</p>
+                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                            Developing a portable bio-signal device integrating TENS and EEG. Designed custom analog circuits and validated prototype for simultaneous neuro-stimulation.
+                        </p>
+                        <div class="flex gap-3 flex-wrap">
+                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Biomedical</span>
+                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Circuit Design</span>
+                            <span class="text-xs font-bold uppercase border-2 border-ink px-2 py-1 bg-paper shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">TENS/EEG</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="group relative pl-12 py-2 mb-16">
+                        <!-- Bullet -->
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                            <h3 class="text-2xl font-sans uppercase opacity-80 group-hover:opacity-100">Research Intern</h3>
+                            <span class="font-mono text-xs font-bold border border-ink px-3 py-1 uppercase group-hover:bg-ink group-hover:text-paper transition-colors">Dec 2024 – Feb 2025</span>
+                        </div>
+                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Hyderabad</p>
+                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                            Hardware benchmarking on Jetson Nano/AGX Orin. Analyzed FLOPS, power, and temperature for CNN models (YOLO, ViT).
+                        </p>
+                         <div class="flex gap-3 flex-wrap">
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Hardware Benchmarking</span>
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Edge Computing</span>
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">NVIDIA Jetson</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="group relative pl-12 py-2 mb-16">
+                        <!-- Bullet -->
+                        <div class="absolute -left-1.5 top-4 w-4 h-4 bg-paper border-2 border-ink group-hover:bg-ink transition-colors"></div>
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                            <h3 class="text-2xl font-sans uppercase opacity-80 group-hover:opacity-100">ML Intern</h3>
+                            <span class="font-mono text-xs font-bold border border-ink px-3 py-1 uppercase group-hover:bg-ink group-hover:text-paper transition-colors">Jun 2024 – Jul 2024</span>
+                        </div>
+                        <p class="font-bold text-sm mb-6 uppercase tracking-widest border-b border-gray-300 pb-2 inline-block">IIT Kharagpur</p>
+                        <p class="text-lg leading-relaxed mb-6 font-mono opacity-80">
+                            Fault identification in AUVs using the "Haizhe" dataset. Built a 9-axis IMU prototype on Raspberry Pi.
+                        </p>
+                        <div class="flex gap-3 flex-wrap">
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Machine Learning</span>
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Robotics (AUV)</span>
+                            <span class="text-xs font-bold uppercase border border-ink px-2 py-1 hover:bg-ink hover:text-paper transition-colors">Raspberry Pi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section (Updated Layout) -->
+    <section id="skills" class="border-t-4 border-ink">
+        <!-- Full width title block -->
+        <div class="w-full p-12 bg-static text-paper border-b-4 border-ink flex items-center justify-center md:justify-start overflow-hidden relative">
+             <div class="noise-overlay absolute inset-0 opacity-20"></div>
+             <h2 class="text-5xl md:text-7xl font-sans uppercase tracking-tighter relative z-10">Tech Stack_</h2>
+        </div>
+        
+        <!-- 4 Column Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Col 1: Hardware -->
+            <div class="p-10 border-b-4 md:border-b-0 md:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+                <i class="fas fa-microchip text-4xl mb-8"></i>
+                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Hardware</h3>
+                <ul class="space-y-4 font-mono text-sm leading-tight">
+                    <li class="before:content-['>_'] before:mr-2">Verilog / SystemVerilog</li>
+                    <li class="before:content-['>_'] before:mr-2">VHDL</li>
+                    <li class="before:content-['>_'] before:mr-2">Vivado</li>
+                    <li class="before:content-['>_'] before:mr-2">Raspberry Pi</li>
+                    <li class="before:content-['>_'] before:mr-2">Arduino</li>
+                </ul>
+            </div>
+            
+            <!-- Col 2: Software -->
+            <div class="p-10 border-b-4 md:border-b-0 lg:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+                <i class="fas fa-code text-4xl mb-8"></i>
+                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Software</h3>
+                <ul class="space-y-4 font-mono text-sm leading-tight">
+                    <li class="before:content-['>_'] before:mr-2">Python (ML/AI)</li>
+                    <li class="before:content-['>_'] before:mr-2">C++</li>
+                    <li class="before:content-['>_'] before:mr-2">LangChain</li>
+                    <li class="before:content-['>_'] before:mr-2">NVIDIA Jetson</li>
+                </ul>
+            </div>
+            
+            <!-- Col 3: Biomedical -->
+            <div class="p-10 border-b-4 md:border-b-0 md:border-r-4 border-ink hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+                <i class="fas fa-heartbeat text-4xl mb-8"></i>
+                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Biomedical</h3>
+                <ul class="space-y-4 font-mono text-sm leading-tight">
+                    <li class="before:content-['>_'] before:mr-2">Bio-Sensors</li>
+                    <li class="before:content-['>_'] before:mr-2">EEG / TENS</li>
+                    <li class="before:content-['>_'] before:mr-2">Analog Circuits</li>
+                    <li class="before:content-['>_'] before:mr-2">Signal Processing</li>
+                </ul>
+            </div>
+
+             <!-- Col 4: Tools & Sim (New) -->
+             <div class="p-10 hover:bg-ink hover:text-paper transition-colors duration-200 min-h-[300px]">
+                <i class="fas fa-tools text-4xl mb-8"></i>
+                <h3 class="font-bold uppercase tracking-widest mb-6 text-sm underline decoration-2 underline-offset-4">Tools & Sim</h3>
+                <ul class="space-y-4 font-mono text-sm leading-tight">
+                    <li class="before:content-['>_'] before:mr-2">MATLAB / Simulink</li>
+                    <li class="before:content-['>_'] before:mr-2">LTspice</li>
+                    <li class="before:content-['>_'] before:mr-2">Proteus</li>
+                    <li class="before:content-['>_'] before:mr-2">SOLIDWORKS</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 border-t-4 border-ink bg-paper">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+                <h2 class="text-5xl md:text-6xl font-sans uppercase tracking-tighter leading-[0.85]">Selected<br>Projects</h2>
+                <a href="https://github.com" class="font-bold uppercase tracking-widest border-2 border-ink px-6 py-3 hover:bg-ink hover:text-paper transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] text-sm">
+                    View GitHub Directory
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-2 border-ink">
+                <!-- Project 1 -->
+                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2025 // ASIP</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">RISC-V<br>Optimization</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        Designed an ASIP for cryptographic workloads. Extended RISC-V with custom instructions for 87% speedup vs baseline.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">ASIP Designer / C++</p>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // MED</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Pi Temp<br>Logger</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        Medical-grade temperature logging. Wheatstone bridge integration with PT100 sensor for high precision data acquisition.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">Python / Instrumentation</p>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="hover-invert border-b-2 lg:border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // HW</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">FPGA<br>RISC CPU</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        16-bit RISC processor with custom ISA on Xilinx Zybo-Z7. Verified hazards using SystemVerilog testbenches.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">SystemVerilog / Vivado</p>
+                    </div>
+                </article>
+                
+                 <!-- Project 4 -->
+                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // FPGA</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">TicketGen<br>Basys 3</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        Verilog-based FSM for vending system. Coin handling and 7-segment display output on FPGA hardware.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">Verilog / Digital Design</p>
+                    </div>
+                </article>
+                
+                 <!-- Project 5 -->
+                <article class="hover-invert border-b-2 border-r-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // EV</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Hybrid<br>Bike EV</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        Circuitry design with Pi & IMU. Achieved 10% efficiency gain with ML-based real-time motor assistance.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">Raspberry Pi / ML</p>
+                    </div>
+                </article>
+                
+                 <!-- Project 6 -->
+                <article class="hover-invert border-b-2 border-ink p-8 flex flex-col h-full bg-paper group min-h-[400px]">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-xs border border-current px-2 py-1">2024 // NLP</span>
+                        <i class="fas fa-arrow-up rotate-45 text-2xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </div>
+                    <h3 class="text-3xl font-sans uppercase leading-none mb-6">Text<br>Summarizer</h3>
+                    <p class="text-sm font-mono mb-8 flex-grow leading-relaxed opacity-80 border-l-2 border-current pl-4">
+                        Hugging Face LLM integration. 75% accuracy with LangChain support for PDF and arXiv research papers.
+                    </p>
+                    <div class="pt-6 mt-auto border-t-2 border-dashed border-current">
+                        <p class="font-mono text-xs uppercase tracking-widest">LLM / NLP</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-static text-paper py-32 border-t-4 border-ink relative">
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <h2 class="text-6xl md:text-[8rem] font-sans uppercase tracking-tighter mb-16 opacity-90 leading-[0.8]">
+                Let's<br>Build.
+            </h2>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-24">
+                <a href="mailto:your.email@example.com" class="px-12 py-6 bg-paper text-ink font-bold uppercase tracking-widest border-2 border-paper hover:bg-transparent hover:text-paper transition-all text-lg shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                    Email Me
+                </a>
+                <div class="flex gap-8">
+                    <a href="#" class="text-3xl hover:opacity-50 transition-opacity"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-3xl hover:opacity-50 transition-opacity"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-end border-t border-gray-800 pt-8 text-xs font-mono uppercase tracking-widest opacity-50">
+                <p>&copy; 2026 Anish De</p>
+                <p>Designed with Code</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+        
+        // Remove navbar border on top, add on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                navbar.classList.add('py-0');
+            } else {
+                navbar.classList.remove('py-0');
+            }
+        });
+    </script>
+</body>
+</html>
